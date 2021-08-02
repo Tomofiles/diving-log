@@ -1,0 +1,13 @@
+version: "3.7"
+services:
+  db:
+    image: postgres:12.7
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: pc+tomofiles
+      POSTGRES_USER: tomofiles
+      POSTGRES_DB: diving_log_development
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+        - ./tmp/pgdata:/var/lib/postgresql/data/pgdata
