@@ -4,12 +4,12 @@ class SessionsController < ApplicationController
   def create
     @user = User.find_or_create_from_auth_hash(auth_hash)
     session[:email] = @user.email
-    redirect_to '/'
+    redirect_to '/logbook'
   end
 
   def destroy
     session[:email] = nil
-    redirect_to '/'
+    redirect_to '/loggedout'
   end
 
   protected
