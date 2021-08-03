@@ -1,2 +1,9 @@
-<%= react_component("organisms/LogbookHeader", { session: @current_user }) %>
+<%= react_component(
+    "organisms/LogbookHeaderAndNavigation",
+    {
+        session: @current_user,
+        isMyLog: @m == "mylog",
+        isMyShop: @m == "myshop",
+        isMyMap: @m == "mymap"
+    }) %>
 logbook#index
