@@ -2,8 +2,14 @@
     "organisms/LogbookHeaderAndNavigation",
     {
         session: @current_user,
-        isMyLog: @m == "mylog",
-        isMyShop: @m == "myshop",
-        isMyMap: @m == "mymap"
+        isMyLog: @isMyLog,
+        isMyShop: @isMyShop,
+        isMyMap: @isMyMap
     }) %>
-logbook#index
+<%= react_component(
+    "organisms/LogBookContents",
+    {
+        isMyLog: @isMyLog,
+        isMyShop: @isMyShop,
+        isMyMap: @isMyMap
+    }) %>

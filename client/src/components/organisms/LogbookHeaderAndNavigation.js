@@ -43,7 +43,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const LogbookHeaderAndNavigation = props => {
-  const element =  document.getElementsByName('csrf-token')[0];
   const [ anchorEl, setAnchorEl ] = useState(null);
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
