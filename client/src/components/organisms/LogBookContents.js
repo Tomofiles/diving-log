@@ -17,8 +17,9 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     flexGrow: 1,
-    marginTop: headerHeight,
-    marginLeft: drawerWidth,
+    marginTop: headerHeight + 20,
+    marginLeft: drawerWidth + 20,
+    marginRight: 10,
   }
 }));
 

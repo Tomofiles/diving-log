@@ -111,7 +111,7 @@ const LogbookHeaderAndNavigation = props => {
           </ListItem>
         </List>
       </Drawer>
-      <AppBar color="secondary" position="fixed" className={classes.appBar}>
+      <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
             {title}
