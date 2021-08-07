@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   get '/signup', to: 'signup#index'
   get '/logbook', to: 'logbook#index'
   get '/loggedout', to: 'loggedout#index'
+  get '/logs/:id', to: 'logs#show'
 
   get '/auth/:provider/callback', to: 'sessions#create'
   get '/logout', to: 'sessions#destroy'
