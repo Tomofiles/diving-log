@@ -10,10 +10,36 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_02_064324) do
+ActiveRecord::Schema.define(version: 2021_08_09_074116) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "logs", force: :cascade do |t|
+    t.integer "no"
+    t.date "date"
+    t.string "diving_point"
+    t.decimal "temperature"
+    t.decimal "water_temperature"
+    t.time "in_time"
+    t.time "out_time"
+    t.integer "start_pressure"
+    t.integer "end_pressure"
+    t.decimal "max_depth"
+    t.decimal "average_depth"
+    t.decimal "transparency"
+    t.integer "diving_time"
+    t.integer "weight"
+    t.string "suits"
+    t.string "entry"
+    t.string "water"
+    t.text "free_text"
+    t.decimal "map_position_lat"
+    t.decimal "map_position_lng"
+    t.integer "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email"

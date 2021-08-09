@@ -17,6 +17,8 @@ import {
   TileLayer,
   useMapEvents
 } from 'react-leaflet';
+import moment from 'moment';
+import updateLog from '../../api/logs';
 
 const headerHeight = 64;
 
@@ -36,29 +38,6 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const item = {
-  id: 4,
-  no: 8,
-  date: "2018-08-28",
-  diving_point: "慶良間諸島 座間味島 知志",
-  temperature: 30,
-  water_temperature: 28.4,
-  in_time: "14:24",
-  out_time: "15:09",
-  start_pressure: 200,
-  end_pressure: 50,
-  max_depth: 13.4,
-  average_depth: 9.2,
-  transparency: 20,
-  diving_time: 45,
-  weight: 2,
-  suits: "ウェット (3mm)",
-  entry: "ボート",
-  water: "海水",
-  free_text: "",
-  map_position: [26.247635, 127.315060],
-}
-
 const MapMoveEvent = props => {
   useMapEvents({
     move: e => {
@@ -71,10 +50,14 @@ const MapMoveEvent = props => {
 const Logs = props => {
   const classes = useStyles();
   const [ isEdit, setIsEdit ] = useState(false);
-  const [ item, setItem ] = useState({});
+  const [ item, setItem ] = useState(undefined);
 
   useEffect(() => {
-    setItem(props.item);
+    const newItem = Object.assign({}, props.item);
+    newItem.in_time = moment(newItem.in_time).utc().format('HH:mm');
+    newItem.out_time = moment(newItem.out_time).utc().format('HH:mm');
+    console.log(newItem);
+    setItem(newItem);
     setIsEdit(props.isEdit);
   }, [ props.item, props.isEdit, setItem ])
 
@@ -87,7 +70,10 @@ const Logs = props => {
   }
 
   const onClickSave = () => {
-    console.log(item);
+    updateLog(props.item.id, item)
+      .then(() => {
+        document.location = `/logs/${props.item.id}`;
+      })
   }
 
   const onChangeInput = (key, e) => {
@@ -101,14 +87,16 @@ const Logs = props => {
   const onChangeMapPosition = latlng => {
     setItem(item => {
       const newItem = Object.assign({}, item);
-      newItem.map_position = [latlng.lat, latlng.lng];
+      newItem.map_position_lat = latlng.lat;
+      newItem.map_position_lng = latlng.lng;
       return newItem;
     });
   }
 
   return(
     <div className={classes.root}>
-      <Container maxWidth="md">
+      {item &&
+        <Container maxWidth="md">
         <Box pb={3}>
           <Paper
             component="main"
@@ -131,7 +119,7 @@ const Logs = props => {
                   <Box p={2}>
                     <Grid container spacing={1} alignItems="center" justifyContent="center">
                       <Grid item xs={4} sm={2}>
-                        <Typography>
+                        <Typography component="div">
                           <Box fontWeight="fontWeightBold">
                             ダイブNo.
                           </Box>
@@ -144,7 +132,7 @@ const Logs = props => {
                         }
                       </Grid>
                       <Grid item xs={4} sm={2}>
-                        <Typography>
+                        <Typography component="div">
                           <Box fontWeight="fontWeightBold">
                             日付
                           </Box>
@@ -152,12 +140,12 @@ const Logs = props => {
                       </Grid>
                       <Grid item xs={8} sm={4}>
                         {isEdit
-                          ? <TextField fullWidth variant="outlined" size="small" value={item.date} onChange={e => onChangeInput("date", e)} /> 
+                          ? <TextField fullWidth variant="outlined" size="small" type="date" value={item.date} onChange={e => onChangeInput("date", e)} /> 
                           : <Typography>{item.date}</Typography>
                         }
                       </Grid>
                       <Grid item xs={4} sm={2}>
-                        <Typography>
+                        <Typography component="div">
                           <Box fontWeight="fontWeightBold">
                             潜水地
                           </Box>
@@ -175,7 +163,7 @@ const Logs = props => {
                   <Box p={2}>
                     <Grid container spacing={1} alignItems="center" justifyContent="center">
                       <Grid item xs={4} sm={2}>
-                        <Typography>
+                        <Typography component="div">
                           <Box fontWeight="fontWeightBold">
                             気温 (℃)
                           </Box>
@@ -188,7 +176,7 @@ const Logs = props => {
                         }
                       </Grid>
                       <Grid item xs={4} sm={2}>
-                        <Typography>
+                        <Typography component="div">
                           <Box fontWeight="fontWeightBold">
                             水温 (℃)
                           </Box>
@@ -201,7 +189,7 @@ const Logs = props => {
                         }
                       </Grid>
                       <Grid item xs={4} sm={2}>
-                        <Typography>
+                        <Typography component="div">
                           <Box fontWeight="fontWeightBold">
                             IN 時間
                           </Box>
@@ -209,12 +197,12 @@ const Logs = props => {
                       </Grid>
                       <Grid item xs={8} sm={4}>
                         {isEdit
-                          ? <TextField fullWidth variant="outlined" size="small" value={item.in_time} onChange={e => onChangeInput("in_time", e)} /> 
+                          ? <TextField fullWidth variant="outlined" size="small" type="time" value={item.in_time} onChange={e => onChangeInput("in_time", e)} /> 
                           : <Typography>{item.in_time}</Typography>
                         }
                       </Grid>
                       <Grid item xs={4} sm={2}>
-                        <Typography>
+                        <Typography component="div">
                           <Box fontWeight="fontWeightBold">
                             OUT 時間
                           </Box>
@@ -222,12 +210,12 @@ const Logs = props => {
                       </Grid>
                       <Grid item xs={8} sm={4}>
                         {isEdit
-                          ? <TextField fullWidth variant="outlined" size="small" value={item.out_time} onChange={e => onChangeInput("out_time", e)} /> 
+                          ? <TextField fullWidth variant="outlined" size="small" type="time" value={item.out_time} onChange={e => onChangeInput("out_time", e)} /> 
                           : <Typography>{item.out_time}</Typography>
                         }
                       </Grid>
                       <Grid item xs={4} sm={2}>
-                        <Typography>
+                        <Typography component="div">
                           <Box fontWeight="fontWeightBold">
                             開始時圧力 (bar)
                           </Box>
@@ -240,7 +228,7 @@ const Logs = props => {
                         }
                       </Grid>
                       <Grid item xs={4} sm={2}>
-                        <Typography>
+                        <Typography component="div">
                           <Box fontWeight="fontWeightBold">
                             終了時圧力 (bar)
                           </Box>
@@ -253,7 +241,7 @@ const Logs = props => {
                         }
                       </Grid>
                       <Grid item xs={4} sm={2}>
-                        <Typography>
+                        <Typography component="div">
                           <Box fontWeight="fontWeightBold">
                             最低深度 (m)
                           </Box>
@@ -266,7 +254,7 @@ const Logs = props => {
                         }
                       </Grid>
                       <Grid item xs={4} sm={2}>
-                        <Typography>
+                        <Typography component="div">
                           <Box fontWeight="fontWeightBold">
                             平均深度 (m)
                           </Box>
@@ -279,7 +267,7 @@ const Logs = props => {
                         }
                       </Grid>
                       <Grid item xs={4} sm={2}>
-                        <Typography>
+                        <Typography component="div">
                           <Box fontWeight="fontWeightBold">
                             透視度 (m)
                           </Box>
@@ -292,7 +280,7 @@ const Logs = props => {
                         }
                       </Grid>
                       <Grid item xs={4} sm={2}>
-                        <Typography>
+                        <Typography component="div">
                           <Box fontWeight="fontWeightBold">
                             潜水時間 (分)
                           </Box>
@@ -310,7 +298,7 @@ const Logs = props => {
                   <Box p={2}>
                     <Grid container spacing={1} alignItems="center" justifyContent="center">
                       <Grid item xs={4} sm={2}>
-                        <Typography>
+                        <Typography component="div">
                           <Box fontWeight="fontWeightBold">
                             ウェイト (kg)
                           </Box>
@@ -323,7 +311,7 @@ const Logs = props => {
                         }
                       </Grid>
                       <Grid item xs={4} sm={2}>
-                        <Typography>
+                        <Typography component="div">
                           <Box fontWeight="fontWeightBold">
                             保護スーツ
                           </Box>
@@ -336,7 +324,7 @@ const Logs = props => {
                         }
                       </Grid>
                       <Grid item xs={4} sm={2}>
-                        <Typography>
+                        <Typography component="div">
                           <Box fontWeight="fontWeightBold">
                             エントリー方法
                           </Box>
@@ -349,7 +337,7 @@ const Logs = props => {
                         }
                       </Grid>
                       <Grid item xs={4} sm={2}>
-                        <Typography>
+                        <Typography component="div">
                           <Box fontWeight="fontWeightBold">
                             淡水／海水
                           </Box>
@@ -367,7 +355,7 @@ const Logs = props => {
                   <Box p={2}>
                     <Grid container spacing={1} alignItems="center" justifyContent="center">
                       <Grid item xs={4} sm={2}>
-                        <Typography>
+                        <Typography component="div">
                           <Box fontWeight="fontWeightBold">
                             自由欄
                           </Box>
@@ -385,54 +373,54 @@ const Logs = props => {
                   <Box p={2}>
                     <Grid container spacing={1} alignItems="center" justifyContent="center">
                       <Grid item xs={12}>
-                        <Typography>
+                        <Typography component="div">
                           <Box fontWeight="fontWeightBold">
                             地図
                           </Box>
                         </Typography>
                       </Grid>
                       <Grid item xs={12}>
-                      {(isEdit && item.map_position) && 
-                        <MapContainer center={item.map_position} zoom={13} scrollWheelZoom={false} className={classes.map}>
+                      {isEdit && 
+                        <MapContainer center={[item.map_position_lat, item.map_position_lng]} zoom={13} scrollWheelZoom={false} className={classes.map}>
                           <TileLayer
                             attribution='&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                           />
                           <MapMoveEvent changeCenter={onChangeMapPosition} />
-                          <Marker position={item.map_position} />
+                          <Marker position={[item.map_position_lat, item.map_position_lng]} />
                         </MapContainer>
                       }
-                      {(!isEdit && item.map_position) && 
-                        <MapContainer center={item.map_position} zoom={13} scrollWheelZoom={false} className={classes.map}>
+                      {!isEdit && 
+                        <MapContainer center={[item.map_position_lat, item.map_position_lng]} zoom={13} scrollWheelZoom={false} className={classes.map}>
                           <TileLayer
                             attribution='&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                           />
-                          <Marker position={item.map_position} />
+                          <Marker position={[item.map_position_lat, item.map_position_lng]} />
                         </MapContainer>
                       }
                       </Grid>
                       {isEdit &&
                         <>
                           <Grid item xs={4} sm={2}>
-                            <Typography>
+                            <Typography component="div">
                               <Box fontWeight="fontWeightBold">
                                 緯度
                               </Box>
                             </Typography>
                           </Grid>
                           <Grid item xs={8} sm={4}>
-                            <Typography>{item.map_position[0]}</Typography>
+                            <Typography>{item.map_position_lat}</Typography>
                           </Grid>
                           <Grid item xs={4} sm={2}>
-                            <Typography>
+                            <Typography component="div">
                               <Box fontWeight="fontWeightBold">
                                 経度
                               </Box>
                             </Typography>
                           </Grid>
                           <Grid item xs={8} sm={4}>
-                            <Typography>{item.map_position[1]}</Typography>
+                            <Typography>{item.map_position_lng}</Typography>
                           </Grid>
                         </>
                       }
@@ -454,13 +442,10 @@ const Logs = props => {
               </Box>
           </Paper>
         </Box>
-      </Container>
+        </Container>
+      }
     </div>
   )
 }
 
-export default Logs 
-
-Logs.defaultProps = {
-  item: item,
-};
+export default Logs

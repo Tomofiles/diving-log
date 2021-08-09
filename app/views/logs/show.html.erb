@@ -1,2 +1,2 @@
-<%= react_component("organisms/LogsHeader",{ session: @current_user, title: @id, mode: "mylog" }) %>
-<%= react_component("organisms/Logs", { id: @id, isEdit: @isEdit }) %>
+<%= react_component("organisms/LogsHeader",{ session: @current_user, title: @log.diving_point, mode: "mylog" }) %>
+<%= react_component("organisms/Logs", { id: @id, isEdit: @isEdit, item: @log }) %>

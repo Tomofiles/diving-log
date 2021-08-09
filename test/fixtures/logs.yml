@@ -1,0 +1,47 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  'no': 1
+  date: 2021-08-09
+  diving_point: MyString
+  temperature: 9.99
+  water_temperature: 9.99
+  in_time: 2021-08-09 16:41:16
+  out_time: 2021-08-09 16:41:16
+  start_pressure: 1
+  end_pressure: 1
+  max_depth: 9.99
+  average_depth: 9.99
+  transparency: 9.99
+  diving_time: 1
+  weight: 1
+  suits: MyString
+  entry: MyString
+  water: MyString
+  free_text: MyText
+  map_position_lat: 9.99
+  map_position_lng: 9.99
+  user_id: 1
+
+two:
+  'no': 1
+  date: 2021-08-09
+  diving_point: MyString
+  temperature: 9.99
+  water_temperature: 9.99
+  in_time: 2021-08-09 16:41:16
+  out_time: 2021-08-09 16:41:16
+  start_pressure: 1
+  end_pressure: 1
+  max_depth: 9.99
+  average_depth: 9.99
+  transparency: 9.99
+  diving_time: 1
+  weight: 1
+  suits: MyString
+  entry: MyString
+  water: MyString
+  free_text: MyText
+  map_position_lat: 9.99
+  map_position_lng: 9.99
+  user_id: 1

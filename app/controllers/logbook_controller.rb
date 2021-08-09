@@ -12,5 +12,9 @@ class LogbookController < ApplicationController
     @isMyLog = m == "mylog"
     @isMyShop = m == "myshop"
     @isMyMap = m == "mymap"
+
+    if @isMyLog
+      @logs = Log.where user_id: current_user.id
+    end
   end
 end
