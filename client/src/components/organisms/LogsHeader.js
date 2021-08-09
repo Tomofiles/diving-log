@@ -28,7 +28,7 @@ const LogsHeader = props => {
   const classes = useStyles();
 
   const onClickBack = () => {
-    history.back();
+    document.location = `/logbook?m=${props.mode}`;
   }
 
   const onClickAvatar = event => {

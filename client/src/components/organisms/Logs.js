@@ -75,15 +75,15 @@ const Logs = props => {
 
   useEffect(() => {
     setItem(props.item);
-  }, [ props.item, setItem ])
+    setIsEdit(props.isEdit);
+  }, [ props.item, props.isEdit, setItem ])
 
   const onClickEdit = () => {
-    setIsEdit(true);
+    document.location = `/logs/${props.item.id}?m=edit`;
   }
 
   const onClickCancel = () => {
-    setItem(props.item);
-    setIsEdit(false);
+    document.location = `/logs/${props.item.id}`;
   }
 
   const onClickSave = () => {
