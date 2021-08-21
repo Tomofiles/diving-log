@@ -14,6 +14,7 @@ class LogsController < ApplicationController
     @isEdit = m == "edit"
 
     @log = Log.find_by! id: @id, user_id: current_user.id
+    @shops = Shop.select(:id, :shop_name).where(user_id: current_user.id)
   end
 
   def update
@@ -26,6 +27,6 @@ class LogsController < ApplicationController
   private
  
   def update_params
-    params.permit :no, :date, :diving_point, :temperature, :water_temperature, :in_time, :out_time, :start_pressure, :end_pressure, :max_depth, :average_depth, :transparency, :diving_time, :weight, :suits, :entry, :water, :free_text, :map_position_lat, :map_position_lng
+    params.permit :no, :date, :diving_point, :temperature, :water_temperature, :in_time, :out_time, :start_pressure, :end_pressure, :max_depth, :average_depth, :transparency, :diving_time, :weight, :suits, :entry, :water, :free_text, :map_position_lat, :map_position_lng, :shop_id
   end
 end

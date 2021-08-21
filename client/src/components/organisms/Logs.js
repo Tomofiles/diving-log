@@ -10,6 +10,9 @@ import {
   TextField,
   Divider,
   Button,
+  Select,
+  MenuItem,
+  FormControl,
 } from '@material-ui/core';
 import {
   MapContainer,
@@ -56,10 +59,11 @@ const Logs = props => {
     const newItem = Object.assign({}, props.item);
     newItem.in_time = moment(newItem.in_time).utc().format('HH:mm');
     newItem.out_time = moment(newItem.out_time).utc().format('HH:mm');
+    newItem.shop_name = props.shops.find(shop => shop.id === newItem.shop_id).shop_name;
     console.log(newItem);
     setItem(newItem);
     setIsEdit(props.isEdit);
-  }, [ props.item, props.isEdit, setItem ])
+  }, [ props.item, props.isEdit, setItem, props.shops ])
 
   const onClickEdit = () => {
     document.location = `/logs/${props.item.id}?m=edit`;
@@ -89,6 +93,14 @@ const Logs = props => {
       const newItem = Object.assign({}, item);
       newItem.map_position_lat = latlng.lat;
       newItem.map_position_lng = latlng.lng;
+      return newItem;
+    });
+  }
+
+  const onChangeShopSelect = e => {
+    setItem(item => {
+      const newItem = Object.assign({}, item);
+      newItem.shop_id = e.target.value;
       return newItem;
     });
   }
@@ -347,6 +359,33 @@ const Logs = props => {
                         {isEdit
                           ? <TextField fullWidth variant="outlined" size="small" value={item.water} onChange={e => onChangeInput("water", e)} /> 
                           : <Typography>{item.water}</Typography>
+                        }
+                      </Grid>
+                    </Grid>
+                  </Box>
+                  <Divider />
+                  <Box p={2}>
+                    <Grid container spacing={1} alignItems="center" justifyContent="center">
+                      <Grid item xs={4} sm={2}>
+                        <Typography component="div">
+                          <Box fontWeight="fontWeightBold">
+                            ショップ
+                          </Box>
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={8} sm={10}>
+                        {isEdit
+                          ? <FormControl variant="outlined" size="small">
+                              <Select
+                                  value={item.shop_id}
+                                  onChange={onChangeShopSelect}
+                                >
+                                  {props.shops.map(shop => (
+                                    <MenuItem key={shop.id} value={shop.id}>{shop.shop_name}</MenuItem>
+                                  ))}
+                                </Select>
+                            </FormControl>
+                          : <Typography>{item.shop_name}</Typography>
                         }
                       </Grid>
                     </Grid>
