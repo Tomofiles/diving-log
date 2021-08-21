@@ -14,7 +14,7 @@ class LogbookController < ApplicationController
     @isMyMap = m == "mymap"
 
     if @isMyLog
-      @logs = Log.where user_id: current_user.id
+      @logs = Log.select(:id, :no, :diving_point, :date).where(user_id: current_user.id)
     end
   end
 end
