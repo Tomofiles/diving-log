@@ -1,0 +1,2 @@
+<%= react_component("organisms/LogsHeader",{ session: @current_user, title: @shop.shop_name, mode: "myshop" }) %>
+<%= react_component("organisms/Shops", { id: @id, isEdit: @isEdit, item: @shop }) %>

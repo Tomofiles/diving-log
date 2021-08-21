@@ -10,14 +10,14 @@ import {
   Typography
 } from "@material-ui/core";
 
-import img from '../../images/GOPR0028_2.JPG';
+import img from '../../images/GOPR0058_2.JPG';
 
 const useStyles = makeStyles({
   root: {
     // maxWidth: 345,
   },
   media: {
-    height: 140,
+    height: 170,
   },
 });
 

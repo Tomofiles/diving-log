@@ -8,6 +8,8 @@ Rails.application.routes.draw do
   get '/loggedout', to: 'loggedout#index'
   get '/logs/:id', to: 'logs#show'
   put '/logs/:id', to: 'logs#update'
+  get '/shops/:id', to: 'shops#show'
+  put '/shops/:id', to: 'shops#update'
 
   get '/auth/:provider/callback', to: 'sessions#create'
   get '/logout', to: 'sessions#destroy'

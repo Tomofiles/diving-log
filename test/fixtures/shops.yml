@@ -1,0 +1,25 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  organization: MyString
+  shop_name: MyString
+  shop_area: MyString
+  address: MyString
+  telephone_number: MyString
+  url: MyString
+  free_text: MyText
+  map_position_lat: 9.99
+  map_position_lng: 9.99
+  user_id: 1
+
+two:
+  organization: MyString
+  shop_name: MyString
+  shop_area: MyString
+  address: MyString
+  telephone_number: MyString
+  url: MyString
+  free_text: MyText
+  map_position_lat: 9.99
+  map_position_lng: 9.99
+  user_id: 1

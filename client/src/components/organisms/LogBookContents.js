@@ -29,7 +29,7 @@ const LogBookContents = props => {
   return (
     <div className={classes.root}>
       {props.isMyLog && <MyLog classes={classes} items={props.items} />}
-      {props.isMyShop && <MyShop classes={classes} />}
+      {props.isMyShop && <MyShop classes={classes} items={props.items} />}
       {props.isMyMap && <MyMap classes={classes} />}
     </div>
   )
