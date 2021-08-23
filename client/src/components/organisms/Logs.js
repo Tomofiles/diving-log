@@ -22,7 +22,7 @@ import {
   useMapEvents
 } from 'react-leaflet';
 import moment from 'moment';
-import updateLog from '../../api/logs';
+import { updateLog, deleteLog } from '../../api/logs';
 import { Launch } from '@material-ui/icons';
 
 const headerHeight = 64;
@@ -61,9 +61,11 @@ const Logs = props => {
     const newItem = Object.assign({}, props.item);
     newItem.in_time = moment(newItem.in_time).utc().format('HH:mm');
     newItem.out_time = moment(newItem.out_time).utc().format('HH:mm');
-    newItem.shop_name = props.shops.find(shop => shop.id === newItem.shop_id).shop_name;
+    newItem.shop_name = "";
+    if (newItem.shop_id !== -1) {
+      newItem.shop_name = props.shops.find(shop => shop.id === newItem.shop_id).shop_name;
+    }
     newItem.shop_url = `/shops/${newItem.shop_id}`
-    console.log(newItem);
     setItem(newItem);
     setIsEdit(props.isEdit);
   }, [ props.item, props.isEdit, setItem, props.shops ])
@@ -74,6 +76,13 @@ const Logs = props => {
 
   const onClickCancel = () => {
     document.location = `/logs/${props.item.id}`;
+  }
+
+  const onClickDelete = () => {
+    deleteLog(props.item.id)
+      .then(() => {
+        document.location = "/logbook?m=mylog";
+      })
   }
 
   const onClickSave = () => {
@@ -124,7 +133,10 @@ const Logs = props => {
                       マイ・ログ
                     </Typography>
                     {isEdit
-                      ? <Button onClick={onClickCancel}>キャンセル</Button>
+                      ? <>
+                          <Button onClick={onClickDelete}>削除</Button>
+                          <Button onClick={onClickCancel}>キャンセル</Button>
+                        </>
                       : <Button onClick={onClickEdit}>編集</Button>
                     }
                   </Box>
@@ -383,16 +395,21 @@ const Logs = props => {
                                   value={item.shop_id}
                                   onChange={onChangeShopSelect}
                                 >
+                                  <MenuItem value={-1}>-</MenuItem>
                                   {props.shops.map(shop => (
                                     <MenuItem key={shop.id} value={shop.id}>{shop.shop_name}</MenuItem>
                                   ))}
                                 </Select>
                             </FormControl>
                           : <Typography>
-                              {item.shop_name}
-                              <IconButton size="small" target="_blank" href={item.shop_url}>
-                                <Launch />
-                              </IconButton>
+                              {item.shop_id !== -1 &&
+                                <>
+                                  {item.shop_name}
+                                  <IconButton size="small" target="_blank" href={item.shop_url}>
+                                    <Launch />
+                                  </IconButton>
+                                </>
+                              }
                             </Typography>
                         }
                       </Grid>

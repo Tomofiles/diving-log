@@ -1,7 +1,13 @@
 import client from './client'
- 
-const updateLog = (id, log) => {
+
+export const updateLog = (id, log) => {
   return client.put(`/logs/${id}`, log)
 }
 
-export default updateLog;
+export const createLog = () => {
+  return client.post(`/logs`, {});
+}
+
+export const deleteLog = id => {
+  return client.delete(`/logs/${id}`, {});
+}

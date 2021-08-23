@@ -42,6 +42,12 @@ class ShopsController < ApplicationController
 
   def destroy
     id = params[:id]
+
+    count = Log.select(:id).where(user_id: current_user.id, shop_id: id).count
+    if count > 0
+      raise RuntimeError, "couldn't deleted because shop is used by log"
+    end
+
     shop = Shop.find_by! id: id, user_id: current_user.id
     shop.destroy!
   end
