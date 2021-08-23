@@ -16,11 +16,34 @@ class ShopsController < ApplicationController
     @shop = Shop.find_by! id: @id, user_id: current_user.id
   end
 
+  def create
+    shop = Shop.new
+    shop.organization = ""
+    shop.shop_name = "無題"
+    shop.shop_area = ""
+    shop.address = ""
+    shop.telephone_number = ""
+    shop.url = ""
+    shop.free_text = ""
+    shop.map_position_lat = 0.0
+    shop.map_position_lng = 0.0
+    shop.user_id = current_user.id
+    shop.save!
+    res = { "id": shop.id }
+    render :json => res
+  end
+
   def update
     id = params[:id]
     shop = Shop.find_by! id: id, user_id: current_user.id
     shop.attributes = update_params
     shop.save!
+  end
+
+  def destroy
+    id = params[:id]
+    shop = Shop.find_by! id: id, user_id: current_user.id
+    shop.destroy!
   end
 
   private

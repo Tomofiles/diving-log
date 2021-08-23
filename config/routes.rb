@@ -10,6 +10,8 @@ Rails.application.routes.draw do
   put '/logs/:id', to: 'logs#update'
   get '/shops/:id', to: 'shops#show'
   put '/shops/:id', to: 'shops#update'
+  delete '/shops/:id', to: 'shops#destroy'
+  post '/shops', to: 'shops#create'
 
   get '/auth/:provider/callback', to: 'sessions#create'
   get '/logout', to: 'sessions#destroy'

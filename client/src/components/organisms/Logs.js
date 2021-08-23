@@ -13,6 +13,7 @@ import {
   Select,
   MenuItem,
   FormControl,
+  IconButton,
 } from '@material-ui/core';
 import {
   MapContainer,
@@ -22,6 +23,7 @@ import {
 } from 'react-leaflet';
 import moment from 'moment';
 import updateLog from '../../api/logs';
+import { Launch } from '@material-ui/icons';
 
 const headerHeight = 64;
 
@@ -60,6 +62,7 @@ const Logs = props => {
     newItem.in_time = moment(newItem.in_time).utc().format('HH:mm');
     newItem.out_time = moment(newItem.out_time).utc().format('HH:mm');
     newItem.shop_name = props.shops.find(shop => shop.id === newItem.shop_id).shop_name;
+    newItem.shop_url = `/shops/${newItem.shop_id}`
     console.log(newItem);
     setItem(newItem);
     setIsEdit(props.isEdit);
@@ -373,9 +376,9 @@ const Logs = props => {
                           </Box>
                         </Typography>
                       </Grid>
-                      <Grid item xs={8} sm={10}>
+                      <Grid item xs={8} sm={4}>
                         {isEdit
-                          ? <FormControl variant="outlined" size="small">
+                          ? <FormControl fullWidth variant="outlined" size="small">
                               <Select
                                   value={item.shop_id}
                                   onChange={onChangeShopSelect}
@@ -385,9 +388,15 @@ const Logs = props => {
                                   ))}
                                 </Select>
                             </FormControl>
-                          : <Typography>{item.shop_name}</Typography>
+                          : <Typography>
+                              {item.shop_name}
+                              <IconButton size="small" target="_blank" href={item.shop_url}>
+                                <Launch />
+                              </IconButton>
+                            </Typography>
                         }
                       </Grid>
+                      <Grid item sm={6}/>
                     </Grid>
                   </Box>
                   <Divider />

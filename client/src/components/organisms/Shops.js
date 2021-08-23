@@ -18,7 +18,7 @@ import {
   TileLayer,
   useMapEvents
 } from 'react-leaflet';
-import updateShop from '../../api/shops';
+import { deleteShop, updateShop } from '../../api/shops';
 
 const headerHeight = 64;
 
@@ -66,6 +66,13 @@ const Shops = props => {
     document.location = `/shops/${props.item.id}`;
   }
 
+  const onClickDelete = () => {
+    deleteShop(props.item.id)
+      .then(() => {
+        document.location = "/logbook?m=myshop";
+      })
+  }
+
   const onClickSave = () => {
     updateShop(props.item.id, item)
       .then(() => {
@@ -106,7 +113,10 @@ const Shops = props => {
                       マイ・ショップ
                     </Typography>
                     {isEdit
-                      ? <Button onClick={onClickCancel}>キャンセル</Button>
+                      ? <>
+                          <Button onClick={onClickDelete}>削除</Button>
+                          <Button onClick={onClickCancel}>キャンセル</Button>
+                        </>
                       : <Button onClick={onClickEdit}>編集</Button>
                     }
                   </Box>
@@ -231,7 +241,7 @@ const Shops = props => {
                       </Grid>
                       <Grid item xs={12}>
                       {isEdit && 
-                        <MapContainer center={[item.map_position_lat, item.map_position_lng]} zoom={17} scrollWheelZoom={false} className={classes.map}>
+                        <MapContainer center={[item.map_position_lat, item.map_position_lng]} zoom={17} className={classes.map}>
                           <TileLayer
                             attribution='&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
