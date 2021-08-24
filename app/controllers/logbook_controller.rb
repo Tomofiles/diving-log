@@ -14,10 +14,10 @@ class LogbookController < ApplicationController
     @isMyMap = m == "mymap"
 
     if @isMyLog
-      @items = Log.select(:id, :no, :diving_point, :date).where(user_id: current_user.id)
+      @items = Log.select(:id, :no, :diving_point, :date).where(user_id: current_user.id).order("id DESC")
     end
     if @isMyShop
-      @items = Shop.select(:id, :organization, :shop_name, :shop_area).where(user_id: current_user.id)
+      @items = Shop.select(:id, :organization, :shop_name, :shop_area).where(user_id: current_user.id).order("id DESC")
     end
   end
 end

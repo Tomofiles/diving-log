@@ -50,7 +50,7 @@ const MyLog = props => {
     <>
       <main className={props.classes.content}>
         <Grid container spacing={2}>
-          {props.items.reverse().map(item => (
+          {props.items.map(item => (
             <Grid item xs={12} sm={6} md={4} lg={3} key={item.id}>
               <Card className={classes.root} elevation={2} onClick={() => onClickLog(item.id)}>
                 <CardActionArea>
