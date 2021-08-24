@@ -15,9 +15,10 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
+  Hidden,
 } from '@material-ui/core';
 
-import { Collections, Map, Store } from '@material-ui/icons';
+import { Collections, Map, Menu, Store } from '@material-ui/icons';
 
 const drawerWidth = 240;
 
@@ -26,19 +27,31 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
   },
   appBar: {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: drawerWidth,
+    [theme.breakpoints.up('sm')]: {
+      width: `calc(100% - ${drawerWidth}px)`,
+      marginLeft: drawerWidth,
+    },
   },
   drawer: {
-    width: drawerWidth,
-    flexShrink: 0,
+    [theme.breakpoints.up('sm')]: {
+      width: drawerWidth,
+      flexShrink: 0,
+    },
   },
   drawerPaper: {
-    width: drawerWidth,
+    [theme.breakpoints.up('sm')]: {
+      width: drawerWidth,
+    },
   },
   toolbar: theme.mixins.toolbar,
   title: {
     flexGrow: 1,
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+    [theme.breakpoints.up('sm')]: {
+      display: 'none',
+    },
   },
 }));
 
@@ -52,6 +65,7 @@ const LogbookHeaderAndNavigation = props => {
   const [ myShop, setMyShop ] = useState(false);
   const [ myMap, setMyMap ] = useState(false);
   const [ title, setTitle ] = useState("");
+  const [ mobileOpen, setMobileOpen ] = useState(false);
 
   useEffect(() => {
     if (props.isMyLog) {
@@ -84,35 +98,72 @@ const LogbookHeaderAndNavigation = props => {
     document.location = "/logout";
   }
 
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+
+  const drawer = (
+    <div>
+      <div className={classes.toolbar} />
+      <Divider />
+      <List>
+        <ListItem button key="my-log" selected={myLog} onClick={() => onClickMenu("mylog")}>
+          <ListItemIcon><Collections/></ListItemIcon>
+          <ListItemText primary="マイ・ログ" />
+        </ListItem>
+        <ListItem button key="my-shop" selected={myShop} onClick={() => onClickMenu("myshop")}>
+          <ListItemIcon><Store/></ListItemIcon>
+          <ListItemText primary="マイ・ショップ" />
+        </ListItem>
+        <ListItem button key="my-map" selected={myMap} onClick={() => onClickMenu("mymap")}>
+          <ListItemIcon><Map/></ListItemIcon>
+          <ListItemText primary="マイ・マップ" />
+        </ListItem>
+      </List>
+    </div>
+  );
+
   return(
     <div className={classes.root}>
-      <Drawer
-        className={classes.drawer}
-        variant="permanent"
-        classes={{
-          paper: classes.drawerPaper,
-        }}
-        anchor="left"
-      >
-        <div className={classes.toolbar} />
-        <Divider />
-        <List>
-          <ListItem button key="my-log" selected={myLog} onClick={() => onClickMenu("mylog")}>
-            <ListItemIcon><Collections/></ListItemIcon>
-            <ListItemText primary="マイ・ログ" />
-          </ListItem>
-          <ListItem button key="my-shop" selected={myShop} onClick={() => onClickMenu("myshop")}>
-            <ListItemIcon><Store/></ListItemIcon>
-            <ListItemText primary="マイ・ショップ" />
-          </ListItem>
-          <ListItem button key="my-map" selected={myMap} onClick={() => onClickMenu("mymap")}>
-            <ListItemIcon><Map/></ListItemIcon>
-            <ListItemText primary="マイ・マップ" />
-          </ListItem>
-        </List>
-      </Drawer>
+      <nav>
+        <Hidden smUp implementation="css">
+          <Drawer
+            className={classes.drawer}
+            variant="temporary"
+            classes={{
+              paper: classes.drawerPaper,
+            }}
+            anchor="left"
+            open={mobileOpen}
+            onClose={handleDrawerToggle}
+          >
+            {drawer}
+          </Drawer>
+        </Hidden>
+        <Hidden xsDown implementation="css">
+          <Drawer
+            className={classes.drawer}
+            variant="permanent"
+            classes={{
+              paper: classes.drawerPaper,
+            }}
+            anchor="left"
+          >
+            {drawer}
+          </Drawer>
+        </Hidden>
+      </nav>
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={handleDrawerToggle}
+            className={classes.menuButton}
+          >
+            <Menu />
+          </IconButton>
           <Typography variant="h6" className={classes.title}>
             {title}
           </Typography>

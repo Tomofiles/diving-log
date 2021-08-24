@@ -17,9 +17,12 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     flexGrow: 1,
-    marginTop: headerHeight + 20,
-    marginLeft: drawerWidth + 20,
     marginRight: 10,
+    marginTop: headerHeight + 20,
+    marginLeft: 20,
+    [theme.breakpoints.up('sm')]: {
+      marginLeft: drawerWidth + 20,
+    },
   }
 }));
 
