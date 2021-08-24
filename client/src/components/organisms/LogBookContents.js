@@ -23,6 +23,13 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.up('sm')]: {
       marginLeft: drawerWidth + 20,
     },
+  },
+  map: {
+    flexGrow: 1,
+    marginTop: headerHeight,
+    [theme.breakpoints.up('sm')]: {
+      marginLeft: drawerWidth,
+    },
   }
 }));
 
@@ -33,7 +40,7 @@ const LogBookContents = props => {
     <div className={classes.root}>
       {props.isMyLog && <MyLog classes={classes} items={props.items} />}
       {props.isMyShop && <MyShop classes={classes} items={props.items} />}
-      {props.isMyMap && <MyMap classes={classes} />}
+      {props.isMyMap && <MyMap classes={classes} items={props.items} />}
     </div>
   )
 }
